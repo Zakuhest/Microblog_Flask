@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+{% if current_user.username %}
+
+<div>
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
+</div>
+<h1>Bienvenido!</h1>
+<h3><img class="img" src="{{ current_user.gravatar(size=70) }}" /><br>Hola, {{ current_user.username.capitalize() }}!</h3>
+<a href="{{ url_for('users.informacion_usuario', username=current_user.username) }}">
+    Ver Perfil
+</a>
+
+<div>
+    {% if current_user.can(WRITE) %}
+        <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+            <p class="form-body">
+            {{ form.body.label }}<br />
+            {{ form.body(size=32) }} 
+            {% for error in form.body.errors %}
+            <span style="color: red">[{{ error }}]</span>
+            </p>
+            {% endfor %}
+        <p>{{ form.submit() }}</p>
+        </form>
+    {% endif %}
+</div>
+
+{% for post in posts %}
+<ul class="posts">
+  <l1 class="post">
+    <div>
+      <a href="{{url_for('users.informacion_usuario', username=post.author.username)}}">
+        <img class ="img-post" src="{{post.author.gravatar(size=40)}}" />
+      </a>
+    </div>
+    <div class="post-card">
+        <div class="post-info">
+        <div class="post-author">
+        <a href="{{url_for('users.informacion_usuario', username=post.author.username)}}">
+            {{ post.author.username }}
+        </a>
+    </div>
+    <div class="post-date">{{ moment(post.timestamp).fromNow() }}</div>
+    </div>
+    <div class="post-info">{{ post.body }}
+    </div>
+    <form method="post">
+      <a class="btn btn-sm" href="{{url_for('posts.edit_post', id = post.id)}}">Edit</a>
+    </form>
+  </l1>
+</ul>
+{% endfor %}
+{% endif %}
+{% endblock %}

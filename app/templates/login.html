@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<h1>Login</h1>
+
+<form action="" method="post" novalidate>
+    {{form.hidden_tag()}}
+
+    <p>
+        {{form.username.label}} <br>
+        {{form.username(placeholder="Ingresar Usuario")}}
+
+        {% for error in form.username.errors %}
+
+        <span style="color: red"> {{ error }}</span>
+        {% endfor %}
+
+
+    </p>
+    <p>
+        {{form.password.label}} <br>
+        {{form.password(placeholder="***********")}}
+
+        
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages: %}
+        <span style="color: red"> {{ message }}</span>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% for error in form.password.errors %}
+
+        <span style="color: red"> {{ error }}</span>
+        {% endfor %}
+
+    </p>
+
+    <p>
+        {{form.boton}} <br>
+
+    </p>
+
+</form>
+
+{% endblock %}

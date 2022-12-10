@@ -1,0 +1,28 @@
+{% extends "base.html"%}
+
+{% block title %}
+    Editar Post
+{% endblock %}
+
+{%block content%}
+{% if current_user.username == post.author.username%}
+<h1>Editar post</h1>
+{% if current_user.can(WRITE) %}
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+      <div>
+        <h2><img class ="img-post" src="{{post.author.gravatar(size=60)}}" />{{ post.author.username.capitalize() }}</h2>
+      </div>
+      <br>
+      {{ form.body.label }}
+      {{ form.body(size=32) }}
+      {% for error in form.body.errors %}
+      <span style="color: red">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+  {% endif %}
+{% endif %}
+{% endblock %}
